@@ -1,32 +1,47 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <component :is="layout">
+      <router-view />
+    </component>
   </div>
 </template>
 
+<script>
+import EmptyLayout from '@/components/layout/EmptyLayout.vue';
+import MainLayout from '@/components/layout/MainLayout.vue';
+import Home from './views/Home';
+import Login from './views/Login';
+import Registration from './views/Registration';
+import Categories from './views/Categories';
+import DetailRecord from './views/DetailRecord';
+import History from './views/History';
+import Planning from './views/Planning';
+import Profile from './views/Profile';
+import Record from './views/Record';
+
+export default {
+  components: {
+    EmptyLayout,
+    MainLayout,
+    Home,
+    Login,
+    Registration,
+    Categories,
+    DetailRecord,
+    History,
+    Planning,
+    Profile,
+    Record,
+  },
+  computed: {
+    layout() {
+      return this.$route.meta.layout || 'main-layout';
+    },
+  },
+};
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+@import '~materialize-css/dist/css/materialize.min.css';
+@import './assets/index';
 </style>
