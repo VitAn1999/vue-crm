@@ -91,7 +91,7 @@ export default {
   },
   mounted() {
     if (messages[this.$route.query.message]) {
-      this.$message[this.$route.query.message];
+      this.$message(messages[this.$route.query.message]);
     }
   },
   methods: {
@@ -104,8 +104,15 @@ export default {
         email: this.email,
         password: this.password,
       };
-      console.log(login);
-      this.$router.push("/");
+
+      this.$store
+        .dispatch("login", login)
+        .then(() => {
+          this.$router.push("/");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
   },
 };
