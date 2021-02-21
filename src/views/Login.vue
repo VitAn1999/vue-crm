@@ -69,13 +69,14 @@
 </template>
 
 <script>
-import { email, required, minLength } from 'vuelidate/lib/validators';
+import { email, required, minLength } from "vuelidate/lib/validators";
+import messages from "../utils/messages";
 export default {
-  name: 'Login',
+  name: "Login",
   data() {
     return {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     };
   },
   validations: {
@@ -88,6 +89,11 @@ export default {
       minLength: minLength(6),
     },
   },
+  mounted() {
+    if (messages[this.$route.query.message]) {
+      this.$message[this.$route.query.message];
+    }
+  },
   methods: {
     onSubmit() {
       if (this.$v.$invalid) {
@@ -99,7 +105,7 @@ export default {
         password: this.password,
       };
       console.log(login);
-      this.$router.push('/');
+      this.$router.push("/");
     },
   },
 };
