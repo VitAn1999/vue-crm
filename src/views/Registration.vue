@@ -128,8 +128,12 @@ export default {
         password: this.password,
         name: this.name,
       };
-      console.log(formData);
-      this.$router.push("/");
+      this.$store
+        .dispatch("registration", formData)
+        .then(() => {
+          this.$router.push("/");
+        })
+        .catch(() => {});
     },
   },
 };

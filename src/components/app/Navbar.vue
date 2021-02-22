@@ -50,7 +50,12 @@ export default {
   },
   methods: {
     logout() {
-      this.$router.push("/login?message=logout");
+      this.$store
+        .dispatch("logout")
+        .then(() => {
+          this.$router.push("/login?message=logout");
+        })
+        .catch(() => {});
     },
   },
   mounted() {

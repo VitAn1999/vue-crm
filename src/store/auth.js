@@ -7,7 +7,48 @@ export default {
           .auth()
           .signInWithEmailAndPassword(payload.email, payload.password);
       } catch (e) {
-        console.log(e);
+        const error = await e;
+        context.commit("setError", error);
+        throw e;
+      }
+    },
+    async logout(context) {
+      try {
+        await fb.auth().signOut();
+      } catch (e) {
+        const error = await e;
+        context.commit("setError", error);
+        throw e;
+      }
+    },
+    async registration(context, payload) {
+      try {
+        const fbAuth = await fb
+          .auth()
+          .createUserWithEmailAndPassword(payload.email, payload.password);
+        const user = {
+          name: payload.name,
+          id: fbAuth.user.uid,
+        };
+        context.dispatch("createUser", user);
+      } catch (e) {
+        const error = await e;
+        context.commit("setError", error);
+        throw e;
+      }
+    },
+    async createUser(context, payload) {
+      try {
+        await fb
+          .database()
+          .ref(`users/${payload.id}/info`)
+          .set({
+            name: payload.name,
+            bill: 1000,
+          });
+      } catch (e) {
+        const error = await e;
+        context.commit("setError", error);
         throw e;
       }
     },
