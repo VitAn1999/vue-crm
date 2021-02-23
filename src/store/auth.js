@@ -15,6 +15,7 @@ export default {
     async logout(context) {
       try {
         await fb.auth().signOut();
+        context.commit("clearInfo");
       } catch (e) {
         const error = await e;
         context.commit("setError", error);
@@ -30,7 +31,7 @@ export default {
           name: payload.name,
           id: fbAuth.user.uid,
         };
-        context.dispatch("createUser", user);
+        await context.dispatch("createUser", user);
       } catch (e) {
         const error = await e;
         context.commit("setError", error);
@@ -50,6 +51,14 @@ export default {
         const error = await e;
         context.commit("setError", error);
         throw e;
+      }
+    },
+    getUid() {
+      const user = fb.auth().currentUser;
+      if (user) {
+        return user.uid;
+      } else {
+        return null;
       }
     },
   },
