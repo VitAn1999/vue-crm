@@ -3,56 +3,51 @@
     <div class="page-title">
       <h3>Счет</h3>
 
-      <button class="btn waves-effect waves-light btn-small">
+      <button
+        class="btn waves-effect waves-light btn-small"
+        @click="updateCurrance"
+      >
         <i class="material-icons">refresh</i>
       </button>
     </div>
+    <Loader v-if="loading" />
+    <div v-else class="row">
+      <HomeBill :rates="this.currency.rates" />
 
-    <div class="row">
-      <div class="col s12 m6 l4">
-        <div class="card light-blue bill-card">
-          <div class="card-content white-text">
-            <span class="card-title">Счет в валюте</span>
-
-            <p class="currency-line">
-              <span>12.0 Р</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col s12 m6 l8">
-        <div class="card orange darken-3 bill-card">
-          <div class="card-content white-text">
-            <div class="card-header">
-              <span class="card-title">Курс валют</span>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Валюта</th>
-                  <th>Курс</th>
-                  <th>Дата</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td>руб</td>
-                  <td>12121</td>
-                  <td>12.12.12</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <HomeCurrency :rates="this.currency.rates" :date="this.currency.date" />
     </div>
   </div>
 </template>
 
 <script>
+import HomeBill from "../components/HomeViews/HomeBill";
+import HomeCurrency from "../components/HomeViews/HomeCurrency";
 export default {
-  name: 'Home',
+  name: "Home",
+  data() {
+    return {
+      loading: true,
+      currency: null,
+    };
+  },
+  async mounted() {
+    this.currency = await this.$store.dispatch("fetchCurrency");
+    if (this.currency) {
+      this.loading = false;
+    }
+  },
+  methods: {
+    async updateCurrance() {
+      this.loading = true;
+      this.currency = await this.$store.dispatch("fetchCurrency");
+      if (this.currency) {
+        this.loading = false;
+      }
+    },
+  },
+  components: {
+    HomeBill,
+    HomeCurrency,
+  },
 };
 </script>

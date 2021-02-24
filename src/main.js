@@ -1,5 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
+import Loader from "./components/app/Loader";
 import Vuelidate from "vuelidate";
 import Firebase from "firebase/app";
 import "firebase/auth";
@@ -16,6 +17,7 @@ Vue.config.productionTip = false;
 Vue.use(messagePlugin);
 Vue.use(Vuelidate);
 Vue.filter("date", dateFilter);
+Vue.component("Loader", Loader);
 
 Firebase.initializeApp({
   apiKey: "AIzaSyA7fXTZjh1gcwe0LqZ_2vvEe8lvD8GOI9s",
