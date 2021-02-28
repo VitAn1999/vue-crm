@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import auth from "./auth";
 import info from "./info";
+import category from "./category";
 
 Vue.use(Vuex);
 
@@ -24,7 +25,6 @@ export default new Vuex.Store({
         `http://data.fixer.io/api/latest?access_key=${key}&symbols=BYN,USD,EUR,RUB`
       );
       const currency = await responce.json();
-      console.log("update");
       return currency;
     },
   },
@@ -33,5 +33,5 @@ export default new Vuex.Store({
       return state.error;
     },
   },
-  modules: { auth, info },
+  modules: { auth, info, category },
 });

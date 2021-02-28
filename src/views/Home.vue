@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import HomeBill from "../components/HomeViews/HomeBill";
-import HomeCurrency from "../components/HomeViews/HomeCurrency";
+import HomeBill from "../components/HomeView/HomeBill";
+import HomeCurrency from "../components/HomeView/HomeCurrency";
 export default {
   name: "Home",
   data() {

@@ -16,6 +16,7 @@ export default {
       try {
         await fb.auth().signOut();
         context.commit("clearInfo");
+        context.commit("clearCategories");
       } catch (e) {
         const error = await e;
         context.commit("setError", error);

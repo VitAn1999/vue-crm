@@ -35,7 +35,9 @@ export default {
   async mounted() {
     if (!this.$store.getters.showInfo) {
       await this.$store.dispatch("fetchInfo");
+      await this.$store.dispatch("fetchCategories");
     }
+
     if (this.$store.getters.showInfo) {
       this.loading = false;
     }
