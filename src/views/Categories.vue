@@ -4,10 +4,16 @@
       <h3>Категории</h3>
     </div>
     <section>
-      <div class="row">
-        <CategoryCreate @created="createCategory" />
+      <Loader v-if="loading" />
+      <div v-else class="row">
+        <CategoryCreate />
 
-        <CategoryEdit />
+        <CategoryEdit
+          v-if="showAllCategories.length"
+          :categories="showAllCategories"
+          :key="showAllCategories.length + updateCount"
+        />
+        <h3 class="center" v-else>У вас нет созданных категорий</h3>
       </div>
     </section>
   </div>
@@ -21,15 +27,30 @@ export default {
     CategoryCreate,
     CategoryEdit,
   },
+  data() {
+    return {
+      loading: true,
+      updateCount: 0,
+    };
+  },
   computed: {
     showAllCategories() {
       return this.$store.getters.showAllCategories;
     },
   },
-  methods: {
-    createCategory() {
-      console.log(this.showAllCategories);
+  watch: {
+    showAllCategories() {
+      this.updateCount++;
     },
+  },
+  mounted() {
+    if (this.$store.getters.showAllCategories) {
+      this.$store.dispatch("fetchCategories").then(() => {
+        this.loading = false;
+      });
+    } else {
+      this.loading = false;
+    }
   },
 };
 </script>

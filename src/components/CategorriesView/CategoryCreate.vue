@@ -32,7 +32,8 @@
           <span
             v-if="$v.limit.$dirty && !$v.limit.minValue"
             class="helper-text invalid"
-            >Минимальная величина</span
+            >Минимальная величина
+            {{ $v.limit.$params.minValue.min }} рублей</span
           >
         </div>
 
@@ -73,10 +74,13 @@ export default {
           this.limit = null;
           this.$v.$reset();
           this.$message("Категория была создана");
-          this.$emit("created");
         })
         .catch(() => {});
     },
+  },
+  mounted() {
+    // eslint-disable-next-line no-undef
+    M.updateTextFields();
   },
 };
 </script>

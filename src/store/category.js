@@ -15,14 +15,16 @@ export default {
             .once("value")
         ).val();
         const categories = [];
-        Object.keys(categorFB).forEach((key) => {
-          const category = categorFB[key];
-          categories.push({
-            title: category.title,
-            limit: category.limit,
-            id: key,
+        if (categorFB) {
+          Object.keys(categorFB).forEach((key) => {
+            const category = categorFB[key];
+            categories.push({
+              title: category.title,
+              limit: category.limit,
+              id: key,
+            });
           });
-        });
+        }
         context.commit("loadCategories", categories);
       } catch (e) {
         context.commit("setError");
@@ -46,6 +48,20 @@ export default {
         throw e;
       }
     },
+    async editCategory(context, payload) {
+      try {
+        const uid = await context.dispatch("getUid");
+        await fb
+          .database()
+          .ref(`users/${uid}/categories`)
+          .child(payload.id)
+          .update({ title: payload.title, limit: payload.limit });
+        context.commit("editCategory", payload);
+      } catch (e) {
+        context.setError(e.message);
+        throw e;
+      }
+    },
   },
   mutations: {
     loadCategories(state, payload) {
@@ -56,6 +72,16 @@ export default {
     },
     createNewCategory(state, payload) {
       state.categories.push(payload);
+    },
+    editCategory(state, payload) {
+      const newCategories = state.categories.map((item) => {
+        if (item.id === payload.id) {
+          return { id: payload.id, title: payload.title, limit: payload.limit };
+        } else {
+          return item;
+        }
+      });
+      state.categories = newCategories;
     },
   },
   getters: {
