@@ -4,10 +4,19 @@
       <h3>Новая запись</h3>
     </div>
 
-    <form class="form">
+    <Loader v-if="loading" />
+
+    <h4 v-else-if="!categories.length" class="center">
+      У вас нет активных категорий.
+      <router-link to="/categories">Добавить категорию</router-link>
+    </h4>
+
+    <form v-else class="form">
       <div class="input-field">
-        <select>
-          <option>name cat</option>
+        <select ref="select" v-model="category">
+          <option v-for="c in categories" :key="c.id" :value="c.id">{{
+            c.title
+          }}</option>
         </select>
         <label>Выберите категорию</label>
       </div>
@@ -45,3 +54,46 @@
     </form>
   </div>
 </template>
+
+<script>
+import Loader from "../components/app/Loader.vue";
+export default {
+  components: { Loader },
+  name: "Record",
+  data() {
+    return {
+      loading: true,
+      select: null,
+      category: null,
+    };
+  },
+  computed: {
+    categories() {
+      return this.$store.getters.showAllCategories;
+    },
+  },
+  mounted() {
+    this.$store
+      .dispatch("fetchCategories")
+      .then(() => {
+        this.loading = false;
+      })
+      .then(() => {
+        if (this.categories.length) {
+          this.category = this.categories[0].id;
+        }
+      })
+      .then(() => {
+        // eslint-disable-next-line no-undef
+        this.select = M.FormSelect.init(this.$refs.select);
+        // eslint-disable-next-line no-undef
+        M.updateTextFields();
+      });
+  },
+  beforeDestroy() {
+    if (this.select && this.select.destroy) {
+      this.select.destroy();
+    }
+  },
+};
+</script>
