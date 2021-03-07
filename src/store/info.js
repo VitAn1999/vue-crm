@@ -32,5 +32,21 @@ export default {
         throw e;
       }
     },
+    async updateInfo(context, payload) {
+      try {
+        const uid = await context.dispatch("getUid");
+        await fb
+          .database()
+          .ref(`users/${uid}/info`)
+          .update({ name: context.getters.showInfo.name, bill: payload });
+        context.commit("setInfo", {
+          name: context.getters.showInfo.name,
+          bill: payload,
+        });
+      } catch (e) {
+        context.commit("setError");
+        throw e;
+      }
+    },
   },
 };
