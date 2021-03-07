@@ -35,16 +35,14 @@ export default {
     async updateInfo(context, payload) {
       try {
         const uid = await context.dispatch("getUid");
+        const updateData = { ...context.getters.showInfo, ...payload };
         await fb
           .database()
           .ref(`users/${uid}/info`)
-          .update({ name: context.getters.showInfo.name, bill: payload });
-        context.commit("setInfo", {
-          name: context.getters.showInfo.name,
-          bill: payload,
-        });
+          .update(updateData);
+        context.commit("setInfo", updateData);
       } catch (e) {
-        context.commit("setError");
+        context.commit("setError", e);
         throw e;
       }
     },

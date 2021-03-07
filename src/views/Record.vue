@@ -127,10 +127,10 @@ export default {
           `На счете недостаточно средств (${this.bill - this.amount})`
         );
       } else {
-        let value = null;
+        let bill = null;
         this.radio === "outcome"
-          ? (value = this.bill - this.amount)
-          : (value = this.bill + this.amount);
+          ? (bill = this.bill - this.amount)
+          : (bill = this.bill + this.amount);
         this.$store.dispatch("createRecord", {
           categoryId: this.category,
           amount: this.amount,
@@ -138,7 +138,8 @@ export default {
           type: this.radio,
           date: new Date().toJSON(),
         });
-        this.$store.dispatch("updateInfo", value).then(() => {
+        this.$store.dispatch("updateInfo", { bill }).then(() => {
+          this.$v.$reset();
           this.amount = 1;
           this.description = "";
           this.$message("Транзакция прошла успешно");

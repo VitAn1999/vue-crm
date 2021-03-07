@@ -27,7 +27,7 @@ export default {
         }
         context.commit("loadCategories", categories);
       } catch (e) {
-        context.commit("setError");
+        context.commit("setError", e);
         throw e;
       }
     },
@@ -44,7 +44,7 @@ export default {
           id: category.key,
         });
       } catch (e) {
-        context.setError(e.message);
+        context.commit("setError", e);
         throw e;
       }
     },
@@ -58,7 +58,7 @@ export default {
           .update({ title: payload.title, limit: payload.limit });
         context.commit("editCategory", payload);
       } catch (e) {
-        context.setError(e.message);
+        context.commit("setError", e);
         throw e;
       }
     },
