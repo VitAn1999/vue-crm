@@ -23,7 +23,7 @@ export default {
         const recordsFB = (
           await fb
             .database()
-            .ref(`users/${uid}/records`)
+            .ref(`users/${uid}/record`)
             .once("value")
         ).val();
         const records = [];
@@ -49,7 +49,7 @@ export default {
   },
   mutations: {
     loadRecords(state, payload) {
-      state = payload;
+      state.records = payload;
     },
   },
   getters: {

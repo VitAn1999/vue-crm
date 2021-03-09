@@ -8,36 +8,53 @@
       <canvas></canvas>
     </div>
 
-    <section>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Сумма</th>
-            <th>Дата</th>
-            <th>Категория</th>
-            <th>Тип</th>
-            <th>Открыть</th>
-          </tr>
-        </thead>
+    <Loader v-if="loading" />
 
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>1212</td>
-            <td>12.12.32</td>
-            <td>name</td>
-            <td>
-              <span class="white-text badge red">Расход</span>
-            </td>
-            <td>
-              <button class="btn-small btn">
-                <i class="material-icons">open_in_new</i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <h4 v-else-if="!records.length" class="center">
+      Записей пока нет.
+      <router-link to="/record">Добавьте запись.</router-link>
+    </h4>
+
+    <section v-else>
+      <Table :records="records" />
     </section>
   </div>
 </template>
+
+<script>
+import Table from "@/components/HistoryView/Table.vue";
+
+export default {
+  data() {
+    return {
+      loading: true,
+    };
+  },
+  components: {
+    Table,
+  },
+  computed: {
+    categories() {
+      return this.$store.getters.showAllCategories;
+    },
+    records() {
+      const fetchRecords = this.$store.getters.showRecords;
+      const records = fetchRecords.map((record) => {
+        return {
+          ...record,
+          categoryName: this.categories.find((c) => c.id === record.categoryId)
+            .title,
+          typeClass: record.type === "income" ? "green" : "red",
+          typeText: record.type === "income" ? "Доход" : "Расход",
+        };
+      });
+      return records;
+    },
+  },
+  async mounted() {
+    await this.$store.dispatch("fetchCategories");
+    await this.$store.dispatch("fetchRecords");
+    this.loading = false;
+  },
+};
+</script>

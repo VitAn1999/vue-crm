@@ -10,7 +10,12 @@
         </div>
       </main>
       <div class="fixed-action-btn">
-        <router-link class="btn-floating btn-large blue" href="#" to="/record">
+        <router-link
+          class="btn-floating btn-large blue"
+          href="#"
+          to="/record"
+          v-tooltip="'Добавить запись'"
+        >
           <i class="large material-icons">add</i>
         </router-link>
       </div>
@@ -21,6 +26,7 @@
 <script>
 import Navbar from "@/components/app/Navbar";
 import Sidebar from "@/components/app/Sidebar";
+import messages from "../../utils/messages";
 export default {
   data() {
     return {
@@ -35,9 +41,8 @@ export default {
   async mounted() {
     if (!this.$store.getters.showInfo) {
       await this.$store.dispatch("fetchInfo");
-    }
-
-    if (this.$store.getters.showInfo) {
+      this.loading = false;
+    } else {
       this.loading = false;
     }
   },
@@ -48,6 +53,14 @@ export default {
       } else {
         return "User name";
       }
+    },
+    showError() {
+      return this.$store.getters.showError;
+    },
+  },
+  watch: {
+    showError(e) {
+      this.$error(messages[e.code] || "Что то пошло не так");
     },
   },
 };

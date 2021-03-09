@@ -16,10 +16,14 @@
       <div v-for="c in categories" :key="c.id">
         <p>
           <strong>{{ c.title }}:</strong>
-          12 122 из 14 000
+          {{ c.outcome | currency }} из {{ c.limit | currency }}
         </p>
-        <div class="progress">
-          <div class="determinate green" style="width:40%"></div>
+        <div class="progress" v-tooltip="c.tooltip">
+          <div
+            class="determinate"
+            :class="[c.color]"
+            :style="{ width: c.percent + '%' }"
+          ></div>
         </div>
       </div>
     </section>
@@ -45,10 +49,36 @@ export default {
       return this.$store.getters.showInfo.bill;
     },
   },
-  mounted() {
-    this.$store.dispatch("fetchRecords");
+  async mounted() {
+    await this.$store.dispatch("fetchRecords");
+
     this.$store.dispatch("fetchCategories").then(() => {
-      this.categories = this.fetchCategories;
+      this.categories = this.fetchCategories.map((category) => {
+        const sumOutcome = this.records
+          .filter((rec) => rec.categoryId === category.id)
+          .filter((rec) => rec.type === "outcome")
+          .reduce((sum, rec) => {
+            return (sum += +rec.amount);
+          }, 0);
+        const percent = (sumOutcome / category.limit) * 100;
+        const progressPercent = percent < 100 ? percent : 100;
+        const progressColor =
+          percent < 50 ? "green" : percent < 90 ? "yellow" : "red";
+        const tooltipValue = category.limit - sumOutcome;
+        const tooltip = `${
+          tooltipValue >= 0 ? "До лимита:" : "Превышение на:"
+        } ${Math.abs(tooltipValue)} BYN`;
+        const newCategory = {
+          id: category.id,
+          title: category.title,
+          limit: category.limit,
+          outcome: sumOutcome,
+          percent: progressPercent,
+          color: progressColor,
+          tooltip,
+        };
+        return newCategory;
+      });
     });
 
     this.loading = false;
