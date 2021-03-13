@@ -31,6 +31,22 @@ export default {
         throw e;
       }
     },
+    async fetchCategoryById(context, id) {
+      try {
+        const uid = await context.dispatch("getUid");
+        const category = (
+          await fb
+            .database()
+            .ref(`users/${uid}/categories`)
+            .child(id)
+            .once("value")
+        ).val();
+        return { ...category, id };
+      } catch (e) {
+        context.commit("setError", e);
+        throw e;
+      }
+    },
     async createNewCategory(context, payload) {
       try {
         const uid = await context.dispatch("getUid");

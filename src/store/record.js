@@ -46,6 +46,22 @@ export default {
         throw e;
       }
     },
+    async fetchRecordById(context, id) {
+      try {
+        const uid = await context.dispatch("getUid");
+        const record = (
+          await fb
+            .database()
+            .ref(`users/${uid}/record`)
+            .child(id)
+            .once("value")
+        ).val();
+        return { ...record, id };
+      } catch (e) {
+        context.commit("setError", e);
+        throw e;
+      }
+    },
   },
   mutations: {
     loadRecords(state, payload) {
