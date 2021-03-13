@@ -122,7 +122,7 @@ export default {
         return;
       }
 
-      if (this.bill < this.amount && (this.radio = "outcome")) {
+      if (this.bill < this.amount && this.radio === "outcome") {
         this.$message(
           `На счете недостаточно средств (${this.bill - this.amount})`
         );

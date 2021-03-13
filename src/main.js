@@ -3,6 +3,7 @@ import App from "./App.vue";
 import Loader from "./components/app/Loader";
 import Vuelidate from "vuelidate";
 import Firebase from "firebase/app";
+import Paginate from "vuejs-paginate";
 import "firebase/auth";
 import "firebase/database";
 import router from "./router";
@@ -22,6 +23,7 @@ Vue.filter("date", dateFilter);
 Vue.filter("currency", currencyFilter);
 Vue.directive("tooltip", tooltipDirective);
 Vue.component("Loader", Loader);
+Vue.component("Paginate", Paginate);
 
 Firebase.initializeApp({
   apiKey: "AIzaSyA7fXTZjh1gcwe0LqZ_2vvEe8lvD8GOI9s",
