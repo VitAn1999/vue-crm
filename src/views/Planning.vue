@@ -32,6 +32,7 @@
 
 <script>
 export default {
+  name: "Planning",
   metaInfo() {
     return { title: this.$title("Панирование") };
   },

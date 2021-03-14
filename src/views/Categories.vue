@@ -23,6 +23,7 @@
 import CategoryCreate from "../components/CategorriesView/CategoryCreate";
 import CategoryEdit from "../components/CategorriesView/CategoryEdit";
 export default {
+  name: "Categories",
   metaInfo() {
     return { title: this.$title("Категории") };
   },
