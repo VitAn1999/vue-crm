@@ -16,8 +16,14 @@
 
           <tbody>
             <tr v-for="cur in currencies" :key="cur">
-              <td>{{ cur }}</td>
-              <td>{{ rates[cur] }}</td>
+              <td v-if="cur === 'RUB'">100 {{ cur }}</td>
+              <td v-else>1 {{ cur }}</td>
+              <td v-if="cur === 'RUB'">
+                {{ ((rates["BYN"] / rates[cur]) * 100) | round }}
+              </td>
+              <td v-else>
+                {{ (rates["BYN"] / rates[cur]) | round }}
+              </td>
               <td>{{ date | date("date") }}</td>
             </tr>
           </tbody>
@@ -32,8 +38,24 @@ export default {
   props: ["rates", "date"],
   data() {
     return {
-      currencies: ["BYN", "USD", "EUR", "RUB"],
+      currencies: ["USD", "EUR", "RUB"],
     };
+  },
+  computed: {
+    baseCurrency() {
+      return this.rates["BYN"] / this.rates["EUR"];
+    },
+  },
+  filters: {
+    round(cur) {
+      return +cur.toFixed(4);
+    },
   },
 };
 </script>
+
+<style scoped>
+table {
+  margin-top: 50px;
+}
+</style>
