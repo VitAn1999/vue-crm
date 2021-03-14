@@ -9,5 +9,8 @@
 <script>
 export default {
   name: "Unknow-page",
+  metaInfo() {
+    return { title: this.$title("Страница не найдена") };
+  },
 };
 </script>

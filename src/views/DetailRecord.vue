@@ -35,6 +35,9 @@
 <script>
 export default {
   name: "Detail-record",
+  metaInfo() {
+    return { title: this.$title("Записи") };
+  },
   data() {
     return {
       loading: true,

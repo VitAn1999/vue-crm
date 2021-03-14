@@ -39,6 +39,9 @@ import paginationMixin from "../mixins/pagination.mixin";
 import { Pie } from "vue-chartjs";
 
 export default {
+  metaInfo() {
+    return { title: this.$title("История") };
+  },
   data() {
     return {
       loading: true,

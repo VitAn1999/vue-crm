@@ -93,6 +93,9 @@ import { required, minValue } from "vuelidate/lib/validators";
 export default {
   components: { Loader },
   name: "Record",
+  metaInfo() {
+    return { title: this.$title("Создать запись") };
+  },
   data() {
     return {
       loading: true,

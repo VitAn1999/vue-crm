@@ -93,6 +93,9 @@ import { email, required, minLength } from "vuelidate/lib/validators";
 
 export default {
   name: "Registration",
+  metaInfo() {
+    return { title: this.$title("Регистрация") };
+  },
   data() {
     return {
       email: "",

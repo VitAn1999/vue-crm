@@ -32,6 +32,9 @@
 
 <script>
 export default {
+  metaInfo() {
+    return { title: this.$title("Панирование") };
+  },
   data() {
     return {
       loading: true,

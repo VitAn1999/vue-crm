@@ -24,6 +24,9 @@ import HomeBill from "../components/HomeView/HomeBill";
 import HomeCurrency from "../components/HomeView/HomeCurrency";
 export default {
   name: "Home",
+  metaInfo() {
+    return { title: this.$title("Главная") };
+  },
   data() {
     return {
       loading: true,
