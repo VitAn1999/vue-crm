@@ -20,13 +20,14 @@ export default {
     async fetchInfo(context) {
       try {
         const uid = await context.dispatch("getUid");
-        const info = (
-          await fb
-            .database()
-            .ref(`users/${uid}/info`)
-            .once("value")
-        ).val();
-        context.commit("setInfo", info);
+        console.log("start");
+        const info = await fb
+          .database()
+          .ref(`users/${uid}/info`)
+          .once("value");
+        const userInfo = info.val();
+        console.log("finish");
+        context.commit("setInfo", userInfo);
       } catch (e) {
         context.commit("setError", e);
         throw e;

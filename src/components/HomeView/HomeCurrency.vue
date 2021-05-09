@@ -15,16 +15,12 @@
           </thead>
 
           <tbody>
-            <tr v-for="cur in currencies" :key="cur">
-              <td v-if="cur === 'RUB'">100 {{ cur }}</td>
-              <td v-else>1 {{ cur }}</td>
-              <td v-if="cur === 'RUB'">
-                {{ ((rates["BYN"] / rates[cur]) * 100) | round }}
+            <tr v-for="(cur, index) in curList" :key="index">
+              <td>{{ cur["Cur_Scale"] }} {{ cur["Cur_Abbreviation"] }}</td>
+              <td>
+                {{ cur["Cur_OfficialRate"] | round }}
               </td>
-              <td v-else>
-                {{ (rates["BYN"] / rates[cur]) | round }}
-              </td>
-              <td>{{ date | date("date") }}</td>
+              <td>{{ cur["Date"] | date("date") }}</td>
             </tr>
           </tbody>
         </table>
@@ -35,15 +31,16 @@
 
 <script>
 export default {
-  props: ["rates", "date"],
-  data() {
-    return {
-      currencies: ["USD", "EUR", "RUB"],
-    };
-  },
+  props: ["currencies"],
   computed: {
-    baseCurrency() {
-      return this.rates["BYN"] / this.rates["EUR"];
+    curList() {
+      return this.currencies.filter((cur) => {
+        return (
+          cur["Cur_Abbreviation"] === "USD" ||
+          cur["Cur_Abbreviation"] === "EUR" ||
+          cur["Cur_Abbreviation"] === "RUB"
+        );
+      });
     },
   },
   filters: {

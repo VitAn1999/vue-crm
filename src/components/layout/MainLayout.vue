@@ -40,7 +40,9 @@ export default {
   },
   async mounted() {
     if (!this.$store.getters.showInfo) {
+      console.log("start");
       await this.$store.dispatch("fetchInfo");
+      console.log("finish");
       this.loading = false;
     } else {
       this.loading = false;
